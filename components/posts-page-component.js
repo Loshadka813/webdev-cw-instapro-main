@@ -2,9 +2,8 @@ import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 
-export function renderPostsPageComponent() {
+export function renderPostsPageComponent({appEl}) {
 
-  const appEl = document.querySelector(".app");
   // @TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
 
