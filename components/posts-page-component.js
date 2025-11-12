@@ -14,18 +14,20 @@ export function renderPostsPageComponent({appEl}) {
   const appPost = posts.map((post) => {
                return ` <li class="post">
                     <div class="post-header" data-user-id="${post.idUser}">
-                        <img src="${post.imageUrlUser}">
+                        <img src="${post.imageUrlUser}" class="post-header__user-image">
                         <p class="post-header__user-name">${post.name}</p>
                     </div>
                     <div class="post-image-container">
-                      <img class="post-image" src="${post.imageUrlUser}">
+                      <img class="post-image" src="${post.imageUrlPost}">
                     </div>
                     <div class="post-likes">
                       <button data-post-id="${post.idPost}">
-                        <img src="${post.imageUrlPost}">
+                         <img src="./assets/images/like-active.svg">
                       </button>
                       <p class="post-likes-text">
-                        Нравится: <strong>2</strong>
+                        Нравится: <strong>
+                        ${Object.keys(post.likes).length}
+                        </strong>
                       </p>
                     </div>
                     <p class="post-text">
