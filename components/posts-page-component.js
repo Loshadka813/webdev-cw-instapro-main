@@ -12,8 +12,7 @@ export function renderPostsPageComponent({appEl}) {
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
    */
   const appPost = posts.map((post) => {
-                `
-                  <li class="post">
+               return ` <li class="post">
                     <div class="post-header" data-user-id="${post.idUser}">
                         <img src="${post.imageUrlUser}">
                         <p class="post-header__user-name">${post.name}</p>
@@ -38,6 +37,7 @@ export function renderPostsPageComponent({appEl}) {
                     </p>
                   </li>
                 `
+                  
   })
    .join("");
 
