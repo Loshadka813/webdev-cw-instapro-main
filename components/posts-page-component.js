@@ -3,6 +3,8 @@ import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 
 export function renderPostsPageComponent() {
+
+  const appEl = document.querySelector(".app");
   // @TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
 
@@ -10,14 +12,6 @@ export function renderPostsPageComponent() {
    * @TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
    */
-  const appEl = document.querySelector(".app")
-  const appHtml = `
-              <div class="page-container">
-                <div class="header-container"></div>
-                <ul class="posts">
-                </ul>
-              </div>
-  `
   const appPost = posts.map((post) => {
                 `
                   <li class="post">
@@ -48,9 +42,16 @@ export function renderPostsPageComponent() {
   })
    .join("");
 
-  appEl.innerHTML = appHtml;
+   const appHtml = `
+              <div class="page-container">
+                <div class="header-container"></div>
+                <ul class="posts">
+                ${appPost}
+                </ul>
+              </div>
+  `
 
-  document.querySelector(".posts").innerHTML = appPost;
+  appEl.innerHTML = appHtml;
 
   renderHeaderComponent({
     element: document.querySelector(".header-container"),
