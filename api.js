@@ -19,7 +19,21 @@ export function getPosts({ token }) {
       return response.json();
     })
     .then((data) => {
-      return data.posts;
+      const appPosts = data.posts.map((post) => {
+        return {
+          idPost: post.id,
+          imageUrlPost: post.imageUrl,
+          date: post.createdAt,
+          description: post.description,
+          idUser: post.user.id,
+          name: post.user.name,
+          imageUrlUser: post.user.imageUrl,
+          likes: 0,
+          isLiked: post.isLiked
+        }
+      })
+      // return data.posts;
+      return appPosts;
     });
 }
 
