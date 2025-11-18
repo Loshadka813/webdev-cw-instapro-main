@@ -22,7 +22,7 @@ export function getPosts({ token }) {
       const appPosts = data.posts.map((post) => {
         return {
           idPost: post.id,
-          imageUrlPost: post.imageUrl,
+          imageUrl: post.imageUrl,
           date: post.createdAt,
           description: post.description,
           idUser: post.user.id,
@@ -33,6 +33,27 @@ export function getPosts({ token }) {
         }
       })
       return appPosts;
+    });
+}
+
+export function postPosts({ description, imageUrl, token }) {
+  return fetch(postsHost, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      description: description,
+      imageUrl: imageUrl,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+      return response.json().then((error) => {
+        throw new Error(error.message);
+      });
+    }
+      return response.json();
     });
 }
 

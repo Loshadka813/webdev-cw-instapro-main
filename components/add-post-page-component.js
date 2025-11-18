@@ -1,8 +1,13 @@
 import { renderUploadImageComponent } from "./upload-image-component.js";
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
+  let imageUrl = "";
+
+  const updateImageUrl = (newImageUrl) => {
+    imageUrl = newImageUrl;
+  };
+
   const render = () => {
-    // @TODO: Реализовать страницу добавления поста
     const appHtml = `
     <div class="page-container">
       <div class="header-container"></div>
@@ -13,7 +18,10 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
           </div>
           <label>
             Опишите фотографию: 
-            <textarea class="input textarea" rows="4"></textarea>
+            <textarea 
+            id="description-input" 
+            class="input textarea" 
+            rows="4"></textarea>
           </label>
         </div>
       </div>
@@ -24,22 +32,31 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     appEl.innerHTML = appHtml;
 
     const uploadImageContainer = appEl.querySelector(".upload-image-container");
-        if (uploadImageContainer) {
-          renderUploadImageComponent({
-            element: uploadImageContainer,
-            onImageUrlChange(newImageUrl) {
-              imageUrl = newImageUrl;
-            },
-          });
-        }
+    
+    renderUploadImageComponent({
+      element: uploadImageContainer,
+      onImageUrlChange: updateImageUrl,
+    });
+    
 
     document.getElementById("add-button").addEventListener("click", () => {
+      const description = document.getElementById("description-input").value;
+
+      if (!description) {
+        alert("Введите описание картинки");
+        return;
+      }
+
+      if (!imageUrl) {
+        alert("Загрузите изображение");
+        return;
+      }
+
       onAddPostClick({
-        description: "Описание картинки",
-        imageUrl: "https://image.png",
+        description: description.trim(),
+        imageUrl,
       });
     });
   };
-
   render();
 }

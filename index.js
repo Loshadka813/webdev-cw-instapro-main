@@ -1,4 +1,4 @@
-import { getPosts } from "./api.js";
+import { getPosts, postPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -110,9 +110,26 @@ const renderApp = () => {
     return renderAddPostPageComponent({
       appEl,
       onAddPostClick({ description, imageUrl }) {
+
         // @TODO: реализовать добавление поста в API
         console.log("Добавляю пост...", { description, imageUrl });
-        goToPage(POSTS_PAGE);
+
+        postPosts({
+          description, 
+          imageUrl, 
+          token: getToken(),
+        })
+        .then(() => {
+        return getPosts({ token: getToken() });
+        })
+        .then((newPosts) => {
+          posts = newPosts;
+          goToPage(POSTS_PAGE);
+        })
+        .catch((error) => {
+          alert(`${error.message || "Не удалось добавить пост"}`);
+          goToPage(ADD_POSTS_PAGE);
+        });
       },
     });
   }
