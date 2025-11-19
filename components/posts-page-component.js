@@ -58,11 +58,14 @@ export function renderPostsPageComponent({appEl}) {
     element: document.querySelector(".header-container"),
   });
 
-  for (let userEl of document.querySelectorAll(".post-header")) {
-    userEl.addEventListener("click", () => {
-      goToPage(USER_POSTS_PAGE, {
-        userId: userEl.dataset.userId,
-      });
-    });
-  }
+//  appEl.addEventListener("click", (event) => {
+//     const postHeader = event.target.closest(".post-header");
+//     if (postHeader) {
+//       const userId = postHeader.closest("[data-user-id]")?.dataset.userId;
+//       if (userId) {
+//         goToPage(USER_POSTS_PAGE, { userId });
+//       }
+//     }
+// });
+
 }

@@ -101,3 +101,36 @@ export function uploadImage({ file }) {
     return response.json();
   });
 }
+
+// Получение постов отдельного пользователя
+export function getUserPosts({ userId, token }) {
+ return fetch(`${postsHost}/user-posts/${userId}`, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+
+      return response.json();
+    })
+    .then((data) => {
+      const appPosts = data.posts.map((post) => {
+        return {
+          idPost: post.id,
+          imageUrl: post.imageUrl,
+          date: post.createdAt,
+          description: post.description,
+          idUser: post.user.id,
+          name: post.user.name,
+          imageUrlUser: post.user.imageUrl,
+          likes: post.likes,
+          isLiked: post.isLiked
+        }
+      })
+      return appPosts;
+    });
+}

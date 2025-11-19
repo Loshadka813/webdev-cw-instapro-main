@@ -1,4 +1,4 @@
-import { getPosts, postPosts } from "./api.js";
+import { getPosts, postPosts, getUserPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -68,10 +68,27 @@ export const goToPage = (newPage, data) => {
 
     if (newPage === USER_POSTS_PAGE) {
       // @@TODO: реализовать получение постов юзера из API
-      console.log("Открываю страницу пользователя: ", data.userId);
-      page = USER_POSTS_PAGE;
+      page = LOADING_PAGE;
       posts = [];
-      return renderApp();
+      renderApp();
+
+      return getUserPosts({ userId: data.userId, token: getToken() })
+        .then((userPosts) => {
+          page = USER_POSTS_PAGE;
+          posts = userPosts;
+          renderApp();
+          console.log("Загружены посты пользователя:", userPosts);
+        })
+        .catch((error) => {
+        console.error("Ошибка загрузки постов пользователя:", error);
+        document.getElementById("app").innerHTML = `
+        <div class="page-container">
+          <p>Не удалось загрузить посты пользователя.</p>
+          <button class="button" onclick="goToPage(POSTS_PAGE)">Назад к ленте</button>
+        </div>
+      `;
+      });
+      
     }
 
     page = newPage;
@@ -134,17 +151,28 @@ const renderApp = () => {
     });
   }
 
-  if (page === POSTS_PAGE) {
-    return renderPostsPageComponent({
+  if (page === POSTS_PAGE || page === USER_POSTS_PAGE) {
+    renderPostsPageComponent({
       appEl,
     });
-  }
-
-  if (page === USER_POSTS_PAGE) {
-    // @TODO: реализовать страницу с фотографиями отдельного пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+    appEl.addEventListener("click", onPostHeaderClick);
     return;
   }
+
+  // if (page === USER_POSTS_PAGE) {
+  //   // @TODO: реализовать страницу с фотографиями отдельного пользвателя
+  //  return renderPostsPageComponent({ appEl });
+  // }
 };
 
 goToPage(POSTS_PAGE);
+
+function onPostHeaderClick(event) {
+  const postHeader = event.target.closest(".post-header");
+  if (postHeader) {
+    const userId = postHeader.dataset.userId;
+    if (userId) {
+      goToPage(USER_POSTS_PAGE, { userId });
+    }
+  }
+}
