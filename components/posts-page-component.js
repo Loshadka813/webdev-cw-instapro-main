@@ -57,15 +57,4 @@ export function renderPostsPageComponent({appEl}) {
   renderHeaderComponent({
     element: document.querySelector(".header-container"),
   });
-
-//  appEl.addEventListener("click", (event) => {
-//     const postHeader = event.target.closest(".post-header");
-//     if (postHeader) {
-//       const userId = postHeader.closest("[data-user-id]")?.dataset.userId;
-//       if (userId) {
-//         goToPage(USER_POSTS_PAGE, { userId });
-//       }
-//     }
-// });
-
 }
