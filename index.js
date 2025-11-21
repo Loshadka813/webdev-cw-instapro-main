@@ -75,20 +75,20 @@ export const goToPage = (newPage, data) => {
       return getUserPosts({ userId: data.userId, token: getToken() })
         .then((userPosts) => {
           page = USER_POSTS_PAGE;
-          posts = userPosts;
           renderApp();
+          posts = userPosts;
           console.log("Загружены посты пользователя:", userPosts);
         })
         .catch((error) => {
-        console.error("Ошибка загрузки постов пользователя:", error);
-        document.getElementById("app").innerHTML = `
+          console.error("Ошибка загрузки постов пользователя:", error);
+          document.getElementById("app").innerHTML = `
         <div class="page-container">
           <p>Не удалось загрузить посты пользователя.</p>
           <button class="button" onclick="goToPage(POSTS_PAGE)">Назад к ленте</button>
         </div>
       `;
-      });
-      
+        });
+
     }
 
     page = newPage;
@@ -132,21 +132,21 @@ const renderApp = () => {
         console.log("Добавляю пост...", { description, imageUrl });
 
         postPosts({
-          description, 
-          imageUrl, 
+          description,
+          imageUrl,
           token: getToken(),
         })
-        .then(() => {
-        return getPosts({ token: getToken() });
-        })
-        .then((newPosts) => {
-          posts = newPosts;
-          goToPage(POSTS_PAGE);
-        })
-        .catch((error) => {
-          alert(`${error.message || "Не удалось добавить пост"}`);
-          goToPage(ADD_POSTS_PAGE);
-        });
+          .then(() => {
+            return getPosts({ token: getToken() });
+          })
+          .then((newPosts) => {
+            posts = newPosts;
+            goToPage(POSTS_PAGE);
+          })
+          .catch((error) => {
+            alert(`${error.message || "Не удалось добавить пост"}`);
+            goToPage(ADD_POSTS_PAGE);
+          });
       },
     });
   }

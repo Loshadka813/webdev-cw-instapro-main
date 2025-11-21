@@ -1,9 +1,7 @@
-import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { posts } from "../index.js";
 
 export function renderPostsPageComponent({appEl}) {
-
   // @TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
 
@@ -22,7 +20,7 @@ export function renderPostsPageComponent({appEl}) {
                     </div>
                     <div class="post-likes">
                       <button data-post-id="${post.idPost}" class="like-button">
-                        <img src="./assets/images/like-active.svg">
+                        <img id="image-like" src="./assets/images/like-active.svg">
                       </button>
                       <p class="post-likes-text">
                         Нравится: <strong>

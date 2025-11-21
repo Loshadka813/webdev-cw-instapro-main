@@ -1,0 +1,26 @@
+{
+  "name": "webdev-cw-instapro-main",
+  "version": "1.0.0",
+  "description": "MVP социальной сети для обмена фотографиями",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Loshadka813/webdev-cw-instapro-main.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Loshadka813/webdev-cw-instapro-main/issues"
+  },
+  "homepage": "https://github.com/Loshadka813/webdev-cw-instapro-main#readme",
+  "dependencies": {
+    "date-fns": "^4.1.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}
