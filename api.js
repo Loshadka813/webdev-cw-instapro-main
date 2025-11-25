@@ -135,66 +135,54 @@ export function getUserPosts({ userId, token }) {
 
 // Поставить лайк
 export function likePost({ postId, token }) {
-  fetch(`${postsHost}/${postId}/like`, {
+  return fetch(`${postsHost}/${postId}/like`, {
     method: "POST",
     headers: {
       Authorization: token,
     },
   })
-  .then((response) => {
-      if (response.status === 401) {
-        throw new Error("Нет авторизации");
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((error) => {
+          throw new Error(
+            error.message ||
+            `Ошибка при установке лайка`
+          );
+        });
       }
-
       return response.json();
     })
     .then((data) => {
-      const likePost = data.posts.map((post) => {
-        return {
-          idPost: post.id,
-          imageUrl: post.imageUrl,
-          date: post.createdAt,
-          description: post.description,
-          idUser: post.user.id,
-          name: post.user.name,
-          imageUrlUser: post.user.imageUrl,
-          likes: post.likes,
-          isLiked: post.isLiked
-        }
-      })
-      return likePost;
+      return {
+        likes: data.post.likes.length,
+        isLiked: data.post.isLiked,
+      }
     });
 }
 
 // Убрать лайк
 export function dislikePost({ postId, token }) {
-  fetch(`${postsHost}/${postId}/dislike`, {
+  return fetch(`${postsHost}/${postId}/dislike`, {
     method: "POST",
     headers: {
       Authorization: token,
     },
   })
-  .then((response) => {
-      if (response.status === 401) {
-        throw new Error("Нет авторизации");
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((error) => {
+          throw new Error(
+            error.message ||
+            `Ошибка при установке лайка`
+          );
+        });
       }
-
       return response.json();
     })
     .then((data) => {
-      const dislikePost = data.posts.map((post) => {
-        return {
-          idPost: post.id,
-          imageUrl: post.imageUrl,
-          date: post.createdAt,
-          description: post.description,
-          idUser: post.user.id,
-          name: post.user.name,
-          imageUrlUser: post.user.imageUrl,
-          likes: post.likes,
-          isLiked: post.isLiked
-        }
-      })
-      return dislikePost;
+      return {
+        likes: data.post.likes.length,
+        isLiked: data.post.isLiked,
+      }
     });
 }

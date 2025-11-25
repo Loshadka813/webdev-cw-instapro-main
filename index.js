@@ -20,7 +20,7 @@ export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
 
-const getToken = () => {
+export const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
   return token;
 };
@@ -74,9 +74,9 @@ export const goToPage = (newPage, data) => {
 
       return getUserPosts({ userId: data.userId, token: getToken() })
         .then((userPosts) => {
+          posts = userPosts;
           page = USER_POSTS_PAGE;
           renderApp();
-          posts = userPosts;
           console.log("Загружены посты пользователя:", userPosts);
         })
         .catch((error) => {

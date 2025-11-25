@@ -40,7 +40,10 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     
 
     document.getElementById("add-button").addEventListener("click", () => {
-      const description = document.getElementById("description-input").value;
+      const description = document.getElementById("description-input").value
+      .trim()
+      .replaceAll("<", "&lt")
+      .replaceAll(">", "&gt");;
 
       if (!description) {
         alert("Введите описание картинки");
@@ -53,7 +56,7 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
       }
 
       onAddPostClick({
-        description: description.trim(),
+        description: description,
         imageUrl,
       });
     });
