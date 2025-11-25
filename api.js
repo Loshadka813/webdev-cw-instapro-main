@@ -1,6 +1,4 @@
-// Замени на свой, чтобы получить независимый от других набор данных.
-// "боевая" версия инстапро лежит в ключе prod
-const personalKey = "prod";
+const personalKey = "marina-lebakina";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
@@ -19,7 +17,41 @@ export function getPosts({ token }) {
       return response.json();
     })
     .then((data) => {
-      return data.posts;
+      const appPosts = data.posts.map((post) => {
+        return {
+          idPost: post.id,
+          imageUrl: post.imageUrl,
+          date: post.createdAt,
+          description: post.description,
+          idUser: post.user.id,
+          name: post.user.name,
+          imageUrlUser: post.user.imageUrl,
+          likes: post.likes,
+          isLiked: post.isLiked
+        }
+      })
+      return appPosts;
+    });
+}
+
+export function postPosts({ description, imageUrl, token }) {
+  return fetch(postsHost, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      description: description,
+      imageUrl: imageUrl,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((error) => {
+          throw new Error(error.message);
+        });
+      }
+      return response.json();
     });
 }
 
@@ -66,4 +98,91 @@ export function uploadImage({ file }) {
   }).then((response) => {
     return response.json();
   });
+}
+
+// Получение постов отдельного пользователя
+export function getUserPosts({ userId, token }) {
+  return fetch(`${postsHost}/user-posts/${userId}`, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+
+      return response.json();
+    })
+    .then((data) => {
+      const appPosts = data.posts.map((post) => {
+        return {
+          idPost: post.id,
+          imageUrl: post.imageUrl,
+          date: post.createdAt,
+          description: post.description,
+          idUser: post.user.id,
+          name: post.user.name,
+          imageUrlUser: post.user.imageUrl,
+          likes: post.likes,
+          isLiked: post.isLiked
+        }
+      })
+      return appPosts;
+    });
+}
+
+// Поставить лайк
+export function likePost({ postId, token }) {
+  return fetch(`${postsHost}/${postId}/like`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((error) => {
+          throw new Error(
+            error.message ||
+            `Ошибка при установке лайка`
+          );
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return {
+        likes: data.post.likes.length,
+        isLiked: data.post.isLiked,
+      }
+    });
+}
+
+// Убрать лайк
+export function dislikePost({ postId, token }) {
+  return fetch(`${postsHost}/${postId}/dislike`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((error) => {
+          throw new Error(
+            error.message ||
+            `Ошибка при установке лайка`
+          );
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return {
+        likes: data.post.likes.length,
+        isLiked: data.post.isLiked,
+      }
+    });
 }
